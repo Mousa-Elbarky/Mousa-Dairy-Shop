@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ألبان موسى - هايبر ماركت المنتجات الطازجة</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        :root {
+            --carrefour-blue: #0046fe;
+            --carrefour-light-blue: #e6eefc;
+        }
+        .bg-mousa-blue { background-color: var(--carrefour-blue); }
+        .text-mousa-blue { color: var(--carrefour-blue); }
+        .border-mousa-blue { border-color: var(--carrefour-blue); }
+        .bg-mousa-light { background-color: var(--carrefour-light-blue); }
+    </style>
+</head>
+<body class="bg-[#f4f7f9] font-sans text-gray-800">
+
+    <div id="main-content">
+        
+        <header class="bg-white shadow-sm sticky top-0 z-50 py-4 border-b border-gray-100">
+            <div class="container mx-auto px-4 flex flex-col md:flex-row gap-3 justify-between items-center">
+                
+                <div class="flex items-center justify-between w-full md:w-auto gap-4">
+                    <div class="cursor-pointer" onclick="location.reload()">
+                        <img src="logo.png" alt="لوجو ألبان موسى" class="h-12 w-auto object-contain">
+                    </div>
+                    
+                    <button onclick="toggleCart()" class="md:hidden relative bg-mousa-blue text-white p-2.5 rounded-xl shadow-md">
+                        🛒 <span id="cart-count-mobile" class="absolute -top-1 -left-1 bg-red-500 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                    </button>
+                </div>
+
+                <div class="w-full md:max-w-2xl relative flex items-center bg-[#f0f3f7] rounded-full px-3">
+                    <span class="text-gray-400 cursor-pointer p-2 hover:text-mousa-blue" onclick="triggerSearch()">🔍</span>
+                    <input type="text" id="search-input" placeholder="ابحث عن الحليب، الجبن، القشطة، العروض..." class="w-full py-2.5 bg-transparent border-none outline-none text-sm pr-1">
+                    <button onclick="triggerSearch()" class="bg-mousa-blue text-white text-xs px-4 py-1.5 rounded-full font-bold hover:opacity-90 transition ml-1">بحث</button>
+                </div>
+
+                <div class="hidden md:flex items-center">
+                    <button onclick="toggleCart()" class="relative bg-mousa-blue text-white px-6 py-2.5 rounded-full font-bold shadow-md shadow-blue-200 hover:opacity-95 transition flex items-center gap-2 cursor-pointer">
+                        <span>السلة</span>
+                        <span id="cart-count" class="bg-white text-mousa-blue text-xs w-5 h-5 rounded-full flex items-center justify-center font-black hidden">0</span>
+                    </button>
+                </div>
+
+            </div>
+        </header>
+
+        <nav class="bg-white border-b border-gray-200 overflow-x-auto whitespace-nowrap sticky top-[76px] z-40 shadow-sm scrollbar-none">
+            <div class="container mx-auto px-4 py-2.5 flex gap-2 text-sm font-bold">
+                <button onclick="filterByCategory('all')" id="cat-all" class="cat-btn px-4 py-2 bg-mousa-blue text-white rounded-full transition cursor-pointer shadow-sm">🔥 الأكثر مبيعاً</button>
+                <button onclick="filterByCategory('dairy')" id="cat-dairy" class="cat-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition cursor-pointer">🥛 الألبان والزبادي</button>
+                <button onclick="filterByCategory('cheese')" id="cat-cheese" class="cat-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition cursor-pointer">🧀 الأجبان واللحوم</button>
+                <button onclick="filterByCategory('drinks')" id="cat-drinks" class="cat-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition cursor-pointer">🧃 المشروبات والعصائر</button>
+                <button onclick="filterByCategory('bakery')" id="cat-bakery" class="cat-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition cursor-pointer">🥖 المخبوزات والتسالي</button>
+                <button onclick="filterByCategory('sweets')" id="cat-sweets" class="cat-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition cursor-pointer">🍮 الحلويات والتحلية</button>
+                <button onclick="filterByCategory('honey')" id="cat-honey" class="cat-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition cursor-pointer">🍯 العسل والطحينة</button>
+                <button onclick="filterByCategory('dates')" id="cat-dates" class="cat-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition cursor-pointer">🌴 التمور والمعمول</button>
+                <button onclick="filterByCategory('grocery')" id="cat-grocery" class="cat-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition cursor-pointer">🛒 البقالة والمخللات</button>
+            </div>
+        </nav>
+
+        <div id="home-banners">
+            <section class="container mx-auto px-4 mt-6">
+                <div class="w-full rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300">
+                    <img src="cover.jpg" alt="عروض ألبان موسى" class="w-full h-auto object-cover block">
+                </div>
+            </section>
+        </div>
+
+        <main class="container mx-auto px-4 py-8">
+            <div id="section-header-wrapper" class="flex justify-between items-center mb-6">
+                <h3 id="main-section-title" class="text-xl font-extrabold text-gray-900">📌 منتجاتنا الطازجة اليوم</h3>
+                <button id="back-to-home-btn" onclick="resetToHome()" class="hidden text-sm font-bold text-mousa-blue hover:underline">← العودة للمنيو الرئيسي</button>
+            </div>
+            
+            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                </div>
+        </main>
+    </div>
+
+    <div id="success-page" class="hidden min-h-screen flex flex-col items-center justify-center bg-white p-6 text-center">
+        <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center text-green-600 text-5xl mb-6 shadow-xl shadow-green-50">✓</div>
+        <h2 class="text-3xl font-black text-gray-900 mb-4">تم استلام طلبك بنجاح! 🎉</h2>
+        <p class="text-xl text-gray-600 max-w-md mb-8 leading-relaxed">
+            ستصلك مكالمة هاتفية فوراً من إدارة <span class="text-mousa-blue font-bold">ألبان موسى</span> لتأكيد الطلب وتوجيه الطيار لباب بيتك.
+        </p>
+        <button onclick="location.reload()" class="bg-mousa-blue text-white px-8 py-3 rounded-full font-bold hover:opacity-90 transition shadow-lg shadow-blue-100 cursor-pointer">
+            العودة للمنيو الرئيسي
+        </button>
+    </div>
+
+    <div id="cart-modal" class="fixed inset-0 bg-black/50 z-50 flex justify-end hidden">
+        <div class="bg-white w-full max-w-md h-full p-6 flex flex-col shadow-xl">
+            <div class="flex justify-between items-center border-b pb-4 mb-4">
+                <h3 class="text-xl font-bold text-mousa-blue">سلة طلباتك</h3>
+                <button onclick="toggleCart()" class="text-gray-400 hover:text-gray-600 text-3xl cursor-pointer">&times;</button>
+            </div>
+            
+            <div id="cart-items" class="flex-1 overflow-y-auto space-y-4 mb-4 pr-1">
+                </div>
+
+            <div class="border-t pt-4 space-y-3 bg-gray-50 p-4 rounded-2xl mb-4">
+                <h4 class="font-bold text-sm text-gray-700 mb-1">📋 بيانات التوصيل المطلوبة:</h4>
+                <input type="text" id="client-name" placeholder="اسم العميل بالكامل" class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:border-mousa-blue transition">
+                <input type="tel" id="client-phone" maxlength="11" placeholder="رقم الموبايل للتواصل (11 رقم)" class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:border-mousa-blue transition">
+                <input type="text" id="client-address" placeholder="العنوان بالتفصيل (المنطقة، الشارع)" class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:border-mousa-blue transition">
+            </div>
+            
+            <div class="border-t pt-2">
+                <div class="flex justify-between text-lg font-bold mb-4">
+                    <span>الحساب الإجمالي:</span>
+                    <span id="cart-total" class="text-mousa-blue font-black">0 ج.م</span>
+                </div>
+                <button onclick="sendToWhatsApp()" class="w-full bg-green-600 text-white py-3 rounded-xl font-bold text-center flex justify-center items-center gap-2 hover:bg-green-700 transition cursor-pointer text-lg shadow-md shadow-green-100">
+                    💬 تأكيد وإرسال الطلب
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="products.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
